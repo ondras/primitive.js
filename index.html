@@ -19,7 +19,7 @@
 				<p>Add <span class="value"></span> geometric shapes
 					<em>(large number: better results, slower)</em>
 				</p>
-				<input name="steps" type="range" min="1" max="300" value="30" />
+				<input name="steps" type="range" min="1" max="500" value="50" />
 			</div>
 			<div>
 				<p>Use these shape types:</p>
@@ -33,6 +33,11 @@
 				<label><input type="radio" name="fill" value="auto" checked="checked" />an auto-detected color</label><br/>
 				<label><input type="radio" name="fill" value="fixed" />a fixed color: </label>
 				<input type="color" value="#ffffff" name="fill-color" />
+			</div>
+			<div>
+				<p>Starting opacity: <span class="value"></span></p>
+				<input name="alpha" type="range" min="0" max="1" step="0.1" value="0.5" /><br/>
+				<label><input type="checkbox" name="mutateAlpha" checked="checked" />Adjust opacity automatically</label>
 			</div>
 			<div>
 				<p>Computation size: <span class="value"></span> pixels
@@ -49,11 +54,6 @@
 					<em>(larger number: more precise results, slower)</em>
 				</p>
 				<input name="shapes" type="range" min="1" max="1000" value="200" />
-			</div>
-			<div>
-				<p>Starting opacity: <span class="value"></span></p>
-				<input name="alpha" type="range" min="0" max="1" step="0.1" value="0.5" /><br/>
-				<label><input type="checkbox" name="mutateAlpha" checked="checked" />Adjust opacity automatically</label>
 			</div>
 			<div>
 				<p>Stop shape optimization after <span class="value"></span> failures
