@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+
+	<body>
+		<h1>primitive.js</h1>
+		<p><img src="logo.png" alt="Logo" /></p>
+		<p>This is a JavaScript port of the <a href="http://primitive.lol">http://primitive.lol</a> app, originally created by Michael Fogleman. Its purpose is to re-draw existing images using only primitive geometric shapes.</p>
+		
+		<h2>Try it in your browser!</h2>
+		<form>
+			<h3>Pick an image file from your computer</h3>
+			<input type="file" />
+			<h3>Check or adjust various rendering options</h3>
+			<div>
+				<p>Add <span class="value"></span> geometric shapes
+					<em>(large number: better results, slower)</em>
+				</p>
+				<input name="steps" type="range" min="1" max="300" value="30" />
+			</div>
+			<div>
+				<p>Use these shape types:</p>
+				<label><input type="checkbox" name="shapeType" value="triangle" checked="checked" />Triangles</label><br/>
+				<label><input type="checkbox" name="shapeType" value="rectangle" />Rectangles</label><br/>
+				<label><input type="checkbox" name="shapeType" value="ellipse" />Ellipses</label>
+			</div>
+			<div>
+				<p>Fill background with:</p>
+				<label><input type="radio" name="fill" value="auto" />an auto-detected color</label><br/>
+				<label><input type="radio" name="fill" value="fixed" checked="checked" />a fixed color: </label>
+				<input type="color" value="#ffffff" name="fill-color" />
+			</div>
+			<div>
+				<p>Computation size: <span class="value"></span> pixels
+					<em>(smaller is faster)</em>
+				</p>
+				<input name="computeSize" type="range" min="128" max="512" value="256" /><br/>
+			</div>
+			<div>
+				<p>Viewing size: <span class="value"></span> pixels</p>
+				<input name="viewSize" type="range" min="256" max="2048" value="512" />
+			</div>
+			<div>
+				<p>Start every iteration with <span class="value"></span> random shapes
+					<em>(larger number: more precise results, slower)</em>
+				</p>
+				<input name="shapes" type="range" min="1" max="1000" value="200" />
+			</div>
+			<div>
+				<p>Starting opacity: <span class="value"></span></p>
+				<input name="alpha" type="range" min="0" max="1" step="0.1" value="0.5" /><br/>
+				<label><input type="checkbox" name="mutateAlpha" checked="checked" />Adjust opacity automatically</label>
+			</div>
+			<div>
+				<p>Stop shape optimization after <span class="value"></span> failures
+					<em>(larger number: more precise results, slower)</em>
+				</p>
+				<input name="mutations" type="range" min="0" max="100" value="30" />
+			</div>
+
+			<h3>Hit the button to start</h3>
+			<p>This is a CPU-intensive process. It might take a while.</p>
+			<input type="submit" value="Let's go!" />
+		</form>
+
+		<section id="output">
+			<div>
+				<h3>Original</h3>
+				<div id="original"></div>
+			</div>
+			<div>
+				<h3>Result <span id="steps"></span></h3>
+				<div class="raster" id="raster"></div>
+				<div class="vector" id="vector"></div>
+				<label><input type="radio" name="type" value="raster" checked="checked" />Raster image: right-click to save</label><br/>
+				<label><input type="radio" name="type" value="vector" />Vector image: copy&amp;paste data from the text area below</label><br/>
+				<textarea class="vector" id="vector-text"></textarea>
+			</div>
+		</section>
+
+		<footer>
+			&copy; 2016 <a href="http://ondras.zarovi.cz/">Ondřej Žára</a>
+		</footer>
+		
+		<script src="js/app.js"></script>
+	</body>
+</html>

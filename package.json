@@ -1,0 +1,19 @@
+{
+  "name": "primitive.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "rollup -c -w",
+    "js": "rollup -c",
+    "css": "lessc css/src/app.less > css/app.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "less": "^2.7.1",
+    "rollup": "^0.36.3",
+    "rollup-plugin-includepaths": "^0.1.6",
+    "rollup-watch": "^2.5.0"
+  }
+}
