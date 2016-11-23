@@ -36,16 +36,19 @@ function go(original, cfg) {
 
 	let svg = Canvas.empty(cfg, true);
 	svg.setAttribute("width", cfg2.width);
+	svg.setAttribute("height", cfg2.height);
 	nodes.vector.appendChild(svg);
 
 	let serializer = new XMLSerializer();
 
 	optimizer.onStep = (step) => {
-		step && result.drawStep(step);
-		svg.appendChild(step.toSVG());
-		let percent = (100*(1-step.distance)).toFixed(2);
-		nodes.vectorText.value = serializer.serializeToString(svg);
-		nodes.steps.innerHTML = `(${++steps} of ${cfg.steps}, ${percent}% similar)`;
+		if (step) {
+			result.drawStep(step);
+			svg.appendChild(step.toSVG());
+			let percent = (100*(1-step.distance)).toFixed(2);
+			nodes.vectorText.value = serializer.serializeToString(svg);
+			nodes.steps.innerHTML = `(${++steps} of ${cfg.steps}, ${percent}% similar)`;
+		}
 	}
 	optimizer.start();
 

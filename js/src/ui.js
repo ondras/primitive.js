@@ -1,4 +1,4 @@
-import {Triangle, Rectangle, Ellipse} from "./shape.js";
+import {Triangle, Rectangle, Ellipse, Smiley} from "./shape.js";
 
 const numberFields = ["computeSize", "viewSize", "steps", "shapes", "alpha", "mutations"];
 const boolFields = ["mutateAlpha"];
@@ -8,6 +8,7 @@ const shapeMap = {
 	"triangle": Triangle,
 	"rectangle": Rectangle,
 	"ellipse": Ellipse,
+	"smiley": Smiley
 }
 
 function fixRange(range) {

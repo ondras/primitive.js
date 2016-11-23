@@ -162,19 +162,37 @@ function getFill(canvas) {
 	return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
+function svgRect(w, h) {
+	let node = document.createElementNS(SVGNS, "rect");
+	node.setAttribute("x", 0);
+	node.setAttribute("y", 0);
+	node.setAttribute("width", w);
+	node.setAttribute("height", h);
+
+	return node;
+}
+
 /* Canvas: a wrapper around a <canvas> element */
 class Canvas {
 	static empty(cfg, svg) {
 		if (svg) {
 			let node = document.createElementNS(SVGNS, "svg");
 			node.setAttribute("viewBox", `0 0 ${cfg.width} ${cfg.height}`);
+			node.setAttribute("clip-path", "url(#clip)");
 
-			let rect = document.createElementNS(SVGNS, "rect");
+			let defs = document.createElementNS(SVGNS, "defs");
+			node.appendChild(defs);
+
+			let cp = document.createElementNS(SVGNS, "clipPath");
+			defs.appendChild(cp);
+			cp.setAttribute("id", "clip");
+			cp.setAttribute("clipPathUnits", "objectBoundingBox");
+			
+			let rect = svgRect(cfg.width, cfg.height);
+			cp.appendChild(rect);
+
+			rect = svgRect(cfg.width, cfg.height);
 			rect.setAttribute("fill", cfg.fill);
-			rect.setAttribute("x", 0);
-			rect.setAttribute("y", 0);
-			rect.setAttribute("width", cfg.width);
-			rect.setAttribute("height", cfg.height);
 			node.appendChild(rect);
 
 			return node;
@@ -529,6 +547,73 @@ class Ellipse extends Shape {
 	}
 }
 
+class Smiley extends Shape {
+	constructor(w, h) {
+		super(w, h);
+		this.center = Shape.randomPoint(w, h);
+		this.text = "☺";
+		this.fontSize = 16;
+		this.computeBbox();
+	}
+
+	computeBbox() {
+		let tmp = new Canvas(1, 1);
+		tmp.ctx.font = `${this.fontSize}px sans-serif`;
+		let w = ~~(tmp.ctx.measureText(this.text).width);
+
+		this.bbox = {
+			left: ~~(this.center[0] - w/2),
+			top: ~~(this.center[1] - this.fontSize/2),
+			width: w,
+			height: this.fontSize
+		};
+		return this;
+	}
+
+	render(ctx) {
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.font = `${this.fontSize}px sans-serif`;
+		ctx.fillText(this.text, this.center[0], this.center[1]);
+	}
+
+	mutate(cfg) {
+		let clone = new this.constructor(0, 0);
+		clone.center = this.center.slice();
+		clone.fontSize = this.fontSize;
+
+		switch (Math.floor(Math.random()*2)) {
+			case 0:
+				let angle = Math.random() * 2 * Math.PI;
+				let radius = Math.random() * 20;
+				clone.center[0] += ~~(radius * Math.cos(angle));
+				clone.center[1] += ~~(radius * Math.sin(angle));
+			break;
+
+			case 1:
+				clone.fontSize += (Math.random() > 0.5 ? 1 : -1);
+				clone.fontSize = Math.max(10, clone.fontSize);
+			break;
+		}
+
+		return clone.computeBbox();
+	}
+
+	toSVG() {
+		let text = document.createElementNS(SVGNS, "text");
+		text.appendChild(document.createTextNode(this.text));
+
+		text.setAttribute("text-anchor", "middle");
+		text.setAttribute("dominant-baseline", "central");
+		text.setAttribute("font-size", this.fontSize);
+		text.setAttribute("font-family", "sans-serif");
+		text.setAttribute("x", this.center[0]);
+		text.setAttribute("y", this.center[1]);
+
+		return text;
+	}
+}
+
 const numberFields = ["computeSize", "viewSize", "steps", "shapes", "alpha", "mutations"];
 const boolFields = ["mutateAlpha"];
 const fillField = "fill";
@@ -537,6 +622,7 @@ const shapeMap = {
 	"triangle": Triangle,
 	"rectangle": Rectangle,
 	"ellipse": Ellipse,
+	"smiley": Smiley
 };
 
 function fixRange(range) {
@@ -787,16 +873,19 @@ function go(original, cfg) {
 
 	let svg = Canvas.empty(cfg, true);
 	svg.setAttribute("width", cfg2.width);
+	svg.setAttribute("height", cfg2.height);
 	nodes.vector.appendChild(svg);
 
 	let serializer = new XMLSerializer();
 
 	optimizer.onStep = (step) => {
-		step && result.drawStep(step);
-		svg.appendChild(step.toSVG());
-		let percent = (100*(1-step.distance)).toFixed(2);
-		nodes.vectorText.value = serializer.serializeToString(svg);
-		nodes.steps.innerHTML = `(${++steps} of ${cfg.steps}, ${percent}% similar)`;
+		if (step) {
+			result.drawStep(step);
+			svg.appendChild(step.toSVG());
+			let percent = (100*(1-step.distance)).toFixed(2);
+			nodes.vectorText.value = serializer.serializeToString(svg);
+			nodes.steps.innerHTML = `(${++steps} of ${cfg.steps}, ${percent}% similar)`;
+		}
 	};
 	optimizer.start();
 

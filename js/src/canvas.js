@@ -29,19 +29,37 @@ function getFill(canvas) {
 	return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 }
 
+function svgRect(w, h) {
+	let node = document.createElementNS(util.SVGNS, "rect");
+	node.setAttribute("x", 0);
+	node.setAttribute("y", 0);
+	node.setAttribute("width", w);
+	node.setAttribute("height", h);
+
+	return node;
+}
+
 /* Canvas: a wrapper around a <canvas> element */
 export default class Canvas {
 	static empty(cfg, svg) {
 		if (svg) {
 			let node = document.createElementNS(util.SVGNS, "svg");
 			node.setAttribute("viewBox", `0 0 ${cfg.width} ${cfg.height}`);
+			node.setAttribute("clip-path", "url(#clip)");
 
-			let rect = document.createElementNS(util.SVGNS, "rect");
+			let defs = document.createElementNS(util.SVGNS, "defs");
+			node.appendChild(defs);
+
+			let cp = document.createElementNS(util.SVGNS, "clipPath");
+			defs.appendChild(cp);
+			cp.setAttribute("id", "clip");
+			cp.setAttribute("clipPathUnits", "objectBoundingBox");
+			
+			let rect = svgRect(cfg.width, cfg.height);
+			cp.appendChild(rect);
+
+			rect = svgRect(cfg.width, cfg.height);
 			rect.setAttribute("fill", cfg.fill);
-			rect.setAttribute("x", 0);
-			rect.setAttribute("y", 0);
-			rect.setAttribute("width", cfg.width);
-			rect.setAttribute("height", cfg.height);
 			node.appendChild(rect);
 
 			return node;

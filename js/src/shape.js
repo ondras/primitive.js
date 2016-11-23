@@ -240,6 +240,73 @@ export class Ellipse extends Shape {
 	}
 }
 
+export class Smiley extends Shape {
+	constructor(w, h) {
+		super(w, h);
+		this.center = Shape.randomPoint(w, h);
+		this.text = "☺";
+		this.fontSize = 16;
+		this.computeBbox();
+	}
+
+	computeBbox() {
+		let tmp = new Canvas(1, 1);
+		tmp.ctx.font = `${this.fontSize}px sans-serif`;
+		let w = ~~(tmp.ctx.measureText(this.text).width);
+
+		this.bbox = {
+			left: ~~(this.center[0] - w/2),
+			top: ~~(this.center[1] - this.fontSize/2),
+			width: w,
+			height: this.fontSize
+		}
+		return this;
+	}
+
+	render(ctx) {
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.font = `${this.fontSize}px sans-serif`;
+		ctx.fillText(this.text, this.center[0], this.center[1]);
+	}
+
+	mutate(cfg) {
+		let clone = new this.constructor(0, 0)
+		clone.center = this.center.slice();
+		clone.fontSize = this.fontSize;
+
+		switch (Math.floor(Math.random()*2)) {
+			case 0:
+				let angle = Math.random() * 2 * Math.PI;
+				let radius = Math.random() * 20;
+				clone.center[0] += ~~(radius * Math.cos(angle));
+				clone.center[1] += ~~(radius * Math.sin(angle));
+			break;
+
+			case 1:
+				clone.fontSize += (Math.random() > 0.5 ? 1 : -1);
+				clone.fontSize = Math.max(10, clone.fontSize);
+			break;
+		}
+
+		return clone.computeBbox();
+	}
+
+	toSVG() {
+		let text = document.createElementNS(util.SVGNS, "text");
+		text.appendChild(document.createTextNode(this.text));
+
+		text.setAttribute("text-anchor", "middle");
+		text.setAttribute("dominant-baseline", "central");
+		text.setAttribute("font-size", this.fontSize);
+		text.setAttribute("font-family", "sans-serif");
+		text.setAttribute("x", this.center[0]);
+		text.setAttribute("y", this.center[1]);
+
+		return text;
+	}
+}
+
 export class Debug extends Shape {
 	constructor(w, h) {
 		super(w, h);
