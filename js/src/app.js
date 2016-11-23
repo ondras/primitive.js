@@ -38,11 +38,13 @@ function go(original, cfg) {
 	svg.setAttribute("width", cfg2.width);
 	nodes.vector.appendChild(svg);
 
+	let serializer = new XMLSerializer();
+
 	optimizer.onStep = (step) => {
 		step && result.drawStep(step);
 		svg.appendChild(step.toSVG());
 		let percent = (100*(1-step.distance)).toFixed(2);
-		nodes.vectorText.value = svg.outerHTML;
+		nodes.vectorText.value = serializer.serializeToString(svg);
 		nodes.steps.innerHTML = `(${++steps} of ${cfg.steps}, ${percent}% similar)`;
 	}
 	optimizer.start();
