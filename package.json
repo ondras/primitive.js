@@ -9,7 +9,7 @@
     "css": "lessc css/src/app.less > css/app.css"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "less": "^2.7.1",
     "rollup": "^0.36.3",
