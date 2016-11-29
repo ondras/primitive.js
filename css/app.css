@@ -12,9 +12,20 @@ body {
   counter-reset: h3;
   box-sizing: border-box;
 }
-h1,
-h1 + p {
-  text-align: center;
+p img {
+  float: right;
+}
+h2 {
+  clear: both;
+}
+@media (max-width: 550px) {
+  body > p:first-of-type,
+  h1 {
+    text-align: center;
+  }
+  p img {
+    float: none;
+  }
 }
 form h3 {
   clear: both;
