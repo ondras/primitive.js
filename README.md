@@ -2,6 +2,10 @@
 
 A JavaScript re-creation of the [primitive.lol](http://primitive.lol/) application.
 
+## How does it look?
+
+Check out the [Masterpieces](https://cielitolindo.de/albums/masterpieces/) gallery for several cool samples.
+
 ## Try it now!
 
 [At a dedicated demo page](https://ondras.github.io/primitive.js/)
