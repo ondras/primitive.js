@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "rollup -c -w",
     "js": "rollup -c",
-    "css": "lessc css/src/app.less > css/app.css"
+    "css": "lessc css/src/app.less > css/app.css",
+    "postinstall": "npm run js && npm run css",
+    "start": "npm run watch"
   },
   "author": "",
   "license": "MIT",
