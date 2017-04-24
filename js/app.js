@@ -308,7 +308,6 @@ class Canvas {
 	}
 }
 
-/* Shape: a geometric primitive with a bbox */
 class Shape {
 	static randomPoint(width, height) {
 		return [~~(Math.random()*width), ~~(Math.random()*height)];
@@ -687,7 +686,6 @@ class State {
 	}
 }
 
-/* Step: a Shape, color and alpha */
 class Step {
 	constructor(shape, cfg) {
 		this.shape = shape;
