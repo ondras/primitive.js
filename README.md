@@ -4,7 +4,7 @@ A JavaScript re-creation of the [primitive.lol](http://primitive.lol/) applicati
 
 ## How does it look?
 
-Check out the [Masterpieces](https://cielitolindo.de/albums/masterpieces/) gallery for several cool samples.
+Check out the [Masterpieces](https://cielitolindo.de/albums/masterpieces/) gallery for several cool samples. There is also a dedicated [Electron-based port](https://github.com/cielito-lindo-productions/primitive.nextgen) that works as a regular desktop application.
 
 ## Try it now!
 
