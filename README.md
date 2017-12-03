@@ -14,7 +14,7 @@ Check out the [Masterpieces](https://cielitolindo.de/albums/masterpieces/) galle
 
 Written in client-side JavaScript, uses Rollup for JS bundling and LESS for CSS pre-processing.
 
-  1. `git clone git@github.com:ondras/primitive.js.git`
+  1. `git clone git@github.com:ondras/primitive.js.git && cd primitive.js`
   1. `npm install`
   1. `npm start`
 
