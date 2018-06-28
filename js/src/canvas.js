@@ -75,6 +75,7 @@ export default class Canvas {
 
 		return new Promise(resolve => {
 			let img = new Image();
+			img.crossOrigin = true;
 			img.src = url;
 			img.onload = e => {
 				let w = img.naturalWidth;
@@ -94,6 +95,10 @@ export default class Canvas {
 				if (cfg.fill == "auto") { cfg.fill = getFill(canvas); }
 
 				resolve(canvas);
+			}
+			img.onerror = e => {
+				console.error(e);
+				alert("The image URL cannot be loaded. Does the server support CORS?");
 			}
 		});
 	}

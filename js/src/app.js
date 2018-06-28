@@ -58,11 +58,15 @@ function go(original, cfg) {
 function onSubmit(e) {
 	e.preventDefault();
 
-	let input = document.querySelector("input[type=file]");
+	let inputFile = document.querySelector("input[type=file]");
+	let inputUrl = document.querySelector("input[name=url]");
+
 	let url = "test";
-	if (input.files.length > 0) {
-		let file = input.files[0];
+	if (inputFile.files.length > 0) {
+		let file = inputFile.files[0];
 		url = URL.createObjectURL(file);
+	} else if (inputUrl.value) {
+		url = inputUrl.value;
 	}
 
 	let cfg = ui.getConfig();

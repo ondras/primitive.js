@@ -208,6 +208,7 @@ class Canvas {
 
 		return new Promise(resolve => {
 			let img = new Image();
+			img.crossOrigin = true;
 			img.src = url;
 			img.onload = e => {
 				let w = img.naturalWidth;
@@ -227,6 +228,10 @@ class Canvas {
 				if (cfg.fill == "auto") { cfg.fill = getFill(canvas); }
 
 				resolve(canvas);
+			};
+			img.onerror = e => {
+				console.error(e);
+				alert("The image URL cannot be loaded. Does the server support CORS?");
 			};
 		});
 	}
@@ -893,11 +898,15 @@ function go(original, cfg) {
 function onSubmit(e) {
 	e.preventDefault();
 
-	let input = document.querySelector("input[type=file]");
+	let inputFile = document.querySelector("input[type=file]");
+	let inputUrl = document.querySelector("input[name=url]");
+
 	let url = "test";
-	if (input.files.length > 0) {
-		let file = input.files[0];
+	if (inputFile.files.length > 0) {
+		let file = inputFile.files[0];
 		url = URL.createObjectURL(file);
+	} else if (inputUrl.value) {
+		url = inputUrl.value;
 	}
 
 	let cfg = getConfig();
